@@ -5,6 +5,7 @@
   <listener>
 <listener-class>com.imayam.music.ImayamListener</listener-class>
 </listener>
+
   <servlet>
     <servlet-name>log4j-init</servlet-name>
     <servlet-class>com.imayam.logging.Log4jInit</servlet-class>
@@ -18,7 +19,7 @@
     <servlet-name>CallBackServlet</servlet-name>
     <servlet-class>com.imayam.ticket.StatusServlet</servlet-class>
   </servlet>
-  <servlet>
+     <servlet>
     <servlet-name>ControllerServlet</servlet-name>
     <servlet-class>com.imayam.smartlinks.ControllerServlet</servlet-class>
   </servlet>
@@ -40,10 +41,9 @@
   </servlet>
    <servlet-mapping>
     <servlet-name>FileUploadServlet</servlet-name>
-    <url-pattern>/uploadFile</url-pattern>
+    <url-pattern>/adminaction</url-pattern>
   </servlet-mapping>
-  
-  <servlet-mapping>
+     <servlet-mapping>
     <servlet-name>CallBackServlet</servlet-name>
     <url-pattern>/getstatus</url-pattern>
   </servlet-mapping>
@@ -66,16 +66,14 @@
 
   <welcome-file-list>
     <welcome-file>index.jsp</welcome-file>
+    
   </welcome-file-list>
  
   <taglib>
     <taglib-uri>http://java.sun.com/jstl/core</taglib-uri>
     <taglib-location>/WEB-INF/tld/c.tld</taglib-location>
   </taglib>
-  
- 
-  
-  <taglib>
+    <taglib>
     <taglib-uri>http://java.sun.com/jstl/fmt</taglib-uri>
     <taglib-location>/WEB-INF/tld/fmt.tld</taglib-location>
   </taglib>
