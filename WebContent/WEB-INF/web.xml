@@ -5,6 +5,10 @@
   <listener>
 <listener-class>com.imayam.music.ImayamListener</listener-class>
 </listener>
+<error-page>
+		<exception-type>java.lang.Throwable</exception-type>
+		<location>/error1.jsp</location>
+	</error-page>
   <servlet>
     <servlet-name>log4j-init</servlet-name>
     <servlet-class>com.imayam.logging.Log4jInit</servlet-class>
@@ -63,6 +67,7 @@
     <servlet-name>MusicControllerServlet</servlet-name>
     <url-pattern>/music</url-pattern>
   </servlet-mapping>
+  
 
   <welcome-file-list>
     <welcome-file>index.jsp</welcome-file>

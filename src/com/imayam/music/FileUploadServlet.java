@@ -6,6 +6,10 @@ import org.apache.commons.fileupload.FileItemFactory;
 import org.apache.commons.fileupload.FileUploadBase;
 import org.apache.commons.fileupload.FileUploadException;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.Iterator;
 
 import javax.mail.Session;
@@ -34,6 +38,7 @@ import org.apache.log4j.Logger;
 import com.sun.mail.handlers.text_html;
 
 import javax.servlet.ServletRequest;
+import javax.swing.JOptionPane;
   
 
 /**
@@ -43,7 +48,7 @@ public class FileUploadServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private static final Logger logger = Logger
 			.getLogger(FileUploadServlet.class);
-
+	private static final String errorPage = "error1.jsp";
 	  //private static final String UPLOAD_DIRECTORY ="";
 	 
     /**
@@ -82,10 +87,68 @@ public class FileUploadServlet extends HttpServlet {
 	}
 	else if("loginaction".equalsIgnoreCase(action))
 	{
-		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/admin/upload.jsp");
-		rd.forward(request, response);
+		String user =request.getParameter("user");
+		String pass=request.getParameter("pass");
+		if((!user.equals(""))&&(!pass.equals("")))
+		{
+		try {
+			//DataAccess.checklogin(user, pass);
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/imayam2_phpbb1", "root","aasi");
+			//	Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/imayam2_phpbb1", "imayam2_aasi","aasi");
 		
+			String sql="select user_nickname,user_password from music_user where user_nickname='"+user+"' and user_password='"+pass+"'";
+			Statement st=con.createStatement();
+			ResultSet rs=st.executeQuery(sql);
+			if(rs.next()) {
+				String un=rs.getString("user_nickname");
+				String pwd=rs.getString("user_password");
+				if(user.equals(un) && pass.equals(pwd))
+					
+				{
+					//RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/admin/upload.jsp");
+					//rd.forward(request, response);		
+				request.setAttribute("message", user);
+				RequestDispatcher rd =request.getRequestDispatcher("/WEB-INF/admin/upload.jsp");
+						rd.forward(request, response);
+					System.out.println("welcome "+user);
+				//	JOptionPane.showMessageDialog(null,"Login Successfully");
+					
+				}else {
+					
+				//	RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/admin/admin.jsp");
+				//	rd.forward(request, response);	
+					String message = "hello";
+					request.setAttribute("message", message);
+					RequestDispatcher rd =request.getRequestDispatcher("/WEB-INF/admin/admin.jsp");
+					rd.forward(request, response);
+			}
+			}else{
+			//RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/admin/admin.jsp");
+			//rd.forward(request, response);
+			String message = "Please Enter Correct Username and Password";
+			request.setAttribute("message", message);
+			RequestDispatcher rd =request.getRequestDispatcher("/WEB-INF/admin/admin.jsp");
+			rd.forward(request, response);
+			}
+			 }catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		}else{
+			//RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/admin/admin.jsp");
+			//rd.forward(request, response);
+			String message = "Please Enter Username and Password";
+			request.setAttribute("message", message);
+			RequestDispatcher rd =request.getRequestDispatcher("/WEB-INF/admin/admin.jsp");
+			rd.forward(request, response);
+			 
+		}	
 	}
+	
+	
+	
 	else if("uploadaction".equalsIgnoreCase(action))
 	{
 		if (!ServletFileUpload.isMultipartContent(request)) {
@@ -111,7 +174,7 @@ public class FileUploadServlet extends HttpServlet {
         upload.setSizeMax(MAX_REQUEST_SIZE);
                
            // constructs the directory path to store upload file
-       String uploadPath = "/home/imayam2/public_html/songs/2013"+File.separator;
+       String uploadPath = "C:/Users/Pugazholi/git/isai/WebContent/songs"+File.separator;
                
             
         try {
@@ -154,7 +217,8 @@ public class FileUploadServlet extends HttpServlet {
         }
 
         catch (Exception ex) {
-        	logger.debug("Exception"+ex.toString());
+        	logger.error("Exception : " + ex.getMessage(), ex);
+		request.getRequestDispatcher(errorPage).forward(request, response);
         //	System.out.println("Exception"+ex.toString());
 
 

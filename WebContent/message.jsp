@@ -10,7 +10,7 @@
 </head>
 <body>
 <center>
-        <h2>${message}</h2>
+        <h2>File Uploaded Successfully</h2>
     </center>
 </body>
 </html>

@@ -13,9 +13,11 @@ import java.util.Iterator;
 import java.util.TimerTask;
 import java.util.Timer;
 
+import javax.servlet.RequestDispatcher;
 import javax.smartcardio.ATR;
 import javax.swing.JOptionPane;
 
+import org.apache.catalina.connector.Response;
 import org.apache.log4j.Logger;
 
 public final class DataAccess  {
@@ -575,15 +577,37 @@ public final class DataAccess  {
 		
 		
 	}
+/*	public static void checklogin(String user,String pass) throws Exception {
+		Connection conn = getConnection();
+		String sql="select * from music_user where user_nickname='"+user+"' and user_password='"+pass+"'";
+		Statement st=conn.createStatement();
+		ResultSet rs=st.executeQuery(sql);
+		while (rs.next()) {
+			String un=rs.getString("user_nickname");
+			String pwd=rs.getString("user_password");
+			if(user.equals(un) && pass.equals(pwd))
+			{
+				
+				System.out.println("welcome "+user);
+				
+			}else {
+				
+				System.out.println("Login Failed");
+		}
+		}
+		conn.close();
+		
+		
+	}
 
-
+*/
 
 	private static Connection getConnection() throws Exception {
 
 		// Register the JDBC driver for MySQL.
 		Class.forName("com.mysql.jdbc.Driver");
-//	Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/imayam2_phpbb1", "root","aasi");
-		Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/imayam2_phpbb1", "imayam2_aasi","aasi");
+	Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/imayam2_phpbb1", "root","aasi");
+	//	Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/imayam2_phpbb1", "imayam2_aasi","aasi");
 	// Connection con =DriverManager.getConnection("jdbc:mysql://localhost:3306/imayam77_phpbb1","imayam77_phpbb1", "");
 
 		return con;

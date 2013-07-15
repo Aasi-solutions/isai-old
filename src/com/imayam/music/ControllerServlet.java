@@ -27,7 +27,7 @@ import org.jaudiotagger.tag.id3.ID3v23Tag;
 public class ControllerServlet extends HttpServlet {
 	private static final Logger logger = Logger
 			.getLogger(ControllerServlet.class);
-	private static final String errorPage = "error.jsp";
+	private static final String errorPage = "error1.jsp";
 
 	public ControllerServlet() {
 	}
@@ -48,10 +48,10 @@ public class ControllerServlet extends HttpServlet {
 		if ("reindex".equalsIgnoreCase(action)) {
 				String dir = request.getParameter("dir");
 				if (dir != null) {
-					File myFiles = new File((new StringBuilder(
-					"/home/imayam2/public_html/songs/")).append(dir)
-					.toString());
-	//	File myFiles = new File(new StringBuilder("C:/Users/Pugazholi/git/isai/WebContent/songs/").append(dir).toString());
+//					File myFiles = new File((new StringBuilder(
+//					"/home/imayam2/public_html/songs/")).append(dir)
+//					.toString());
+		File myFiles = new File(new StringBuilder("C:/Users/Pugazholi/git/isai/WebContent/songs/").append(dir).toString());
 					StringBuffer buffer = getFileNames(myFiles);
 				    PrintWriter out = response.getWriter();
 					response.setContentType("text/plain");
@@ -237,9 +237,7 @@ public class ControllerServlet extends HttpServlet {
 						
 				}
 						}
-							}
-							
-				
+							}		
 							
 				}
 					}
