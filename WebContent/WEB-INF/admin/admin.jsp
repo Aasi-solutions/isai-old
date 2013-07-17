@@ -31,7 +31,13 @@
 
 </script>
 
-<center><h1>Welcome to Admin Account!!!</h1><br><br>
+<center><h1>Welcome to Admin Account!!!</h1><br>
+<%
+final String message = (String) request.getAttribute ("message");
+%>
+<h4>
+ <c:out value="${message}" /> </h4>
+
 <!--  <form name="f1"  action="adminaction" onSubmit="return validate();" method="post">
 <input type = "hidden" name="action" value="loginaction"/><br>
 UserName<input type="text" name="uname"/><br>
@@ -50,11 +56,6 @@ Password<input type="password" name=pass><br><br><br>
 
 </table>
 </form>
-<%
-final String message = (String) request.getAttribute ("message");
-%>
-<h4>
- <c:out value="${message}" /> </h4>
  
  
 

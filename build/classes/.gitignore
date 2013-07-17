@@ -1,4 +1,5 @@
 /com
+/log4j.lcf
+/org
 /MySqlTest.class
 /TokenizerTest.class
-/org
