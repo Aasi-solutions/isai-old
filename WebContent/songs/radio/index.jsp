@@ -1,7 +1,10 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 
+<%@page import="java.util.List"%>
+<%@page import="java.util.ArrayList"%>
 <%@page import="com.imayam.music.DataAccess"%>
 <%@page import="com.imayam.music.ControllerServlet"%>
+
 <%@ taglib prefix="c" uri="/WEB-INF/tld/c.tld" %>
 <% 
 
@@ -35,12 +38,21 @@ String numbmoviesearch = (String) request.getParameter("numbmoviesearch");
 	<META NAME="keywords" content="Yuvan, Yuvan Shankar Raja, Poovellam Kettupaar, g v prakasah">
 	<META NAME="description" content="Listen to Tamil Songs Online">
 	<link rel=stylesheet type="text/css" href="../../style.css">
+	<link rel=stylesheet type="text/css" href="../../style2.css">
   <%@ include file="/ajax.jsp" %>  
-
+  
 <script type="text/javascript" 
   src="/isai/songs/radio/js/quicktime/jquery-1.2.3.pack.js"></script>
 <script type="text/javascript" 
   src="/isai/songs/radio/js/quicktime/jquery.embedquicktime.js"></script>
+   
+ <script src="/isai/songs/radio/js/jquery.autocomplete.js"></script>
+     <script src="/isai/songs/radio/js/jquery-1.4.2.min.js"></script> 
+ <!--     <script type="text/javascript"
+      src="/isai/songs/radio/js/ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js"></script>  
+   
+    <script src="/isai/songs/radio/js/jquery-ui-1.10.3.custom.js"></script>   -->  
+   
 <script type="text/javascript">
   jQuery.noConflict();
   jQuery(document).ready(function() {
@@ -242,6 +254,7 @@ else if ("playlist1".equalsIgnoreCase(userAction)) {
     playString = "/isai/music?action=getSongs" + numbmoviesearch;
 
 }else if ("search".equalsIgnoreCase(userAction)) { 
+	session.setAttribute("artists1", null);
     display = searchartist;
     playString = "/isai/music?action=search" + searchartist;
 } else if ("userplaylist".equalsIgnoreCase(userAction)) { 
@@ -296,13 +309,19 @@ else if ("playlist1".equalsIgnoreCase(userAction)) {
 <br><br>
 
 <form name="searchForm" action="index.jsp" method="get">
-    <input type="textbox" name="searchartist" />
-    <input type="hidden" name="action" value="search" />
- 
+  <input type="text" id="auto" name="searchartist" class="input_text" />
+      <input type="hidden" name="action" value="search" />
     <input type="submit" name="action" value="Search & Listen" />
 
 </form>
 
+
+ <script>
+ 
+  jQuery( $(function() {
+		$("#auto").autocomplete("/isai/auto");
+	 }));
+    </script>
 
 
 <br><br>

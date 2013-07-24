@@ -42,11 +42,18 @@
     <servlet-name>FileUploadServlet</servlet-name>
     <servlet-class>com.imayam.music.FileUploadServlet</servlet-class>
   </servlet>
-   <servlet-mapping>
-    <servlet-name>FileUploadServlet</servlet-name>
-    <url-pattern>/adminaction</url-pattern>
+  <servlet>
+    <servlet-name>Auto</servlet-name>
+    <servlet-class>com.imayam.music.Auto</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>CallBackServlet</servlet-name>
+    <url-pattern>/getstatus</url-pattern>
   </servlet-mapping>
-  
+   <servlet-mapping>
+    <servlet-name>Auto</servlet-name>
+    <url-pattern>/auto</url-pattern>
+  </servlet-mapping>
   <servlet-mapping>
     <servlet-name>CallBackServlet</servlet-name>
     <url-pattern>/getstatus</url-pattern>
@@ -67,7 +74,10 @@
     <servlet-name>MusicControllerServlet</servlet-name>
     <url-pattern>/music</url-pattern>
   </servlet-mapping>
-  
+  <servlet-mapping>
+    <servlet-name>FileUploadServlet</servlet-name>
+    <url-pattern>/adminaction</url-pattern>
+  </servlet-mapping>
 
   <welcome-file-list>
     <welcome-file>index.jsp</welcome-file>

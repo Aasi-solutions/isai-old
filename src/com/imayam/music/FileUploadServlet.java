@@ -92,8 +92,8 @@ public class FileUploadServlet extends HttpServlet {
 				try {
 
 					Class.forName("com.mysql.jdbc.Driver");
-					//Connection con = DriverManager.getConnection(
-//							"jdbc:mysql://localhost:3306/imayam2_phpbb1",
+//					Connection con = DriverManager.getConnection(
+//						"jdbc:mysql://localhost:3306/imayam2_phpbb1",
 //							"root", "aasi");
 					 Connection con =
 					 DriverManager.getConnection("jdbc:mysql://localhost:3306/imayam2_phpbb1",
@@ -133,7 +133,8 @@ public class FileUploadServlet extends HttpServlet {
 					}
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
-					e.printStackTrace();
+					
+					logger.error("exception1",e);
 				}
 
 			} else {
@@ -188,7 +189,7 @@ public class FileUploadServlet extends HttpServlet {
 					System.out.println();
 					for (FileItem item : formItems) {
 						String name = item.getFieldName();
-						String value = item.getString();
+						String value = item.getString().toString();
 
 						// processes only fields that are not form fields
 						if (!item.isFormField()) {
@@ -217,14 +218,30 @@ public class FileUploadServlet extends HttpServlet {
 									request.setAttribute("message",
 											"Upload has been done successfully!");
 									break;
-								} else {
+								} else if(uploadDir.exists()){
+									String filePath = uploadDir
+											+ File.separator + fileName;
+									File storeFile = new File(filePath);
+									logger.debug("File name " + fileName
+											+ "Fie Path" + filePath
+											+ "Store file is" + storeFile);
+
+									// saves the file on disk
+									item.write(storeFile);
+									request.setAttribute("message",
+											"Upload has been done successfully!");
+									break;
+//									
+								}
+								else
+								{
 									String message = "Please Choose a File";
 									request.setAttribute("message", message);
 									request.getRequestDispatcher(errorPage)
 											.forward(request, response);
 								}
 							} else if (value.equals("") && fileName.equals("")) {
-								String message = "Please Enter movie name and Choose a File";
+								String message = "Please Enter Folder name and Choose a File";
 								request.setAttribute("message", message);
 								request.getRequestDispatcher(errorPage)
 										.forward(request, response);
@@ -234,12 +251,12 @@ public class FileUploadServlet extends HttpServlet {
 								request.getRequestDispatcher(errorPage)
 										.forward(request, response);
 							} else if (value.equals("") && !fileName.equals("")) {
-								String message = "Please Enter the Movie Name";
+								String message = "Please Enter the Folder Name";
 								request.setAttribute("message", message);
 								request.getRequestDispatcher(errorPage)
 										.forward(request, response);
 							} else {
-								String message = "Please Enter movie name and Choose a File";
+								String message = "Please Enter Folder name and Choose a File";
 								request.setAttribute("message", message);
 								request.getRequestDispatcher(errorPage)
 										.forward(request, response);
@@ -247,10 +264,20 @@ public class FileUploadServlet extends HttpServlet {
 
 						}
 
-						logger.debug("name and value" + name + value);
-
-						uploadDir = new File(uploadPath + value);
-						logger.debug("uploadDir" + uploadDir);
+						
+						if(!value.equals(""))
+						{
+							logger.debug("name and value" + name + value);
+							uploadDir = new File(uploadPath + value);
+							logger.debug("uploadDir" + uploadDir);
+						}else{
+							String message = "Please Enter Folder name";
+							request.setAttribute("message", message);
+							request.getRequestDispatcher(errorPage)
+									.forward(request, response);
+							break;
+						}
+						
 
 					}
 				}

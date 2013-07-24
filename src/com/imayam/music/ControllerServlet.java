@@ -51,7 +51,7 @@ public class ControllerServlet extends HttpServlet {
 					File myFiles = new File((new StringBuilder(
 					"/home/imayam2/public_html/songs/")).append(dir)
 					.toString());
-	//	File myFiles = new File(new StringBuilder("C:/Users/Pugazholi/git/isai/WebContent/songs/").append(dir).toString());
+	//	File myFiles = new File(new StringBuilder("C:/AASI_WORK/2013/").append(dir).toString());
 					StringBuffer buffer = getFileNames(myFiles);
 				    PrintWriter out = response.getWriter();
 					response.setContentType("text/plain");

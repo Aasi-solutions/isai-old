@@ -574,15 +574,16 @@ public final class DataAccess  {
 		ps.execute();
 		ps.close();
 		conn.close();
-		
-		
 	}
+	
+	
+
 
 	private static Connection getConnection() throws Exception {
 
 		// Register the JDBC driver for MySQL.
 		Class.forName("com.mysql.jdbc.Driver");
-//	Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/imayam2_phpbb1", "root","aasi");
+	//Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/imayam2_phpbb1", "root","aasi");
 		Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/imayam2_phpbb1", "imayam2_aasi","aasi");
 	// Connection con =DriverManager.getConnection("jdbc:mysql://localhost:3306/imayam77_phpbb1","imayam77_phpbb1", "");
 
