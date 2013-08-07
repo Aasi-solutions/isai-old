@@ -36,6 +36,21 @@ public class ControllerServlet extends HttpServlet {
 			throws ServletException, IOException {
 		doPost(request, response);
 		
+		try {			
+			HttpSession session = request.getSession();			
+			ArrayList<GetMovie> gm = new ArrayList<GetMovie>();
+			gm = DataAccess.getImage();
+			request.setAttribute("img1", gm);
+			request.getRequestDispatcher("/songs/radio/index.jsp").forward(request, response);
+			doPost(request, response);
+			return;
+		
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+		logger.error(e);
+		}
+
+	}
 	}
 
 	public void doPost(HttpServletRequest request, HttpServletResponse response)
