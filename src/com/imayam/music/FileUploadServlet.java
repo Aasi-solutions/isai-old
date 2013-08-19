@@ -55,6 +55,43 @@ public class FileUploadServlet extends HttpServlet {
 		PrintWriter out = response.getWriter();
 		response.setContentType("text/html");
 		String action = request.getParameter("action");
+		
+			if ("adminedit".equalsIgnoreCase(action)) {
+			ArrayList<SongVo> sv = new ArrayList<SongVo>();
+
+			try {
+			String getmovie=request.getParameter("searchartist");
+				sv = DataAccess.getsongfields(getmovie);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			// return;
+
+			request.setAttribute("song", sv);
+			request.getRequestDispatcher("/WEB-INF/admin/edit.jsp").forward(
+					request, response);
+			return;
+		}
+
+		else if ("updation".equalsIgnoreCase(action)) {
+			
+			String id = request.getParameter("id");
+			String artist_id = request.getParameter("aid");
+			String movie = request.getParameter("movie");
+			String song = request.getParameter("song");
+			String composer = request.getParameter("composer");
+			String lyrics = request.getParameter("lyrics");
+			String artist_name = request.getParameter("artist");
+
+			try {
+				DataAccess.getDetails(id,artist_id, movie, song, composer, lyrics,artist_name);
+				out.println("Changes Updated!!!");
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 		if ("home".equalsIgnoreCase(action)) {
 			System.out.println("Enters into adminaction if loop");
 			RequestDispatcher rd = request
