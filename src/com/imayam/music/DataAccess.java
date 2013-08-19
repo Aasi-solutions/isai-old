@@ -574,6 +574,49 @@ public final class DataAccess  {
 		
 		
 	}
+	
+	public static ArrayList<SongVo> getsongfields(String getmovie) throws Exception {
+		Connection conn = getConnection();
+		ArrayList<SongVo> songlist = new ArrayList<SongVo>();
+		//select distinct a.id,b.catalog_id,c.artist_id,c.artist_name from music_catalog a,music_catalog_m2m_artist b,music_artist c where b.artist_id=c.artist_id and a.id=b.catalog_id and a.movie='3'; 
+		String sql = "select distinct a.id,a.movie,a.song,a.composer,a.lyrics,c.artist_id,c.artist_name from music_catalog a,music_catalog_m2m_artist b,music_artist c where b.artist_id=c.artist_id and a.id=b.catalog_id and a.movie='"+getmovie+"'";
+		Statement stmt = conn.createStatement();
+		ResultSet rs = stmt.executeQuery(sql);
+		while (rs.next()) {	
+			String id = rs.getString("id");
+			String movie=rs.getString("movie");
+			String song = rs.getString("song");
+			String composer = rs.getString("composer");
+			String lyrics = rs.getString("lyrics");
+			String artist = rs.getString("artist_name");
+			String artist_id=rs.getString("artist_id");
+		
+			SongVo av=new SongVo();
+			av.setId(id);
+			av.setMovieName(movie);
+			av.setsongName(song);
+			av.setComposerName(composer);
+			av.setLyricistName(lyrics);
+			av.setArtistName(artist);
+			av.setArtistId(artist_id);
+			songlist.add(av);
+			
+	}								
+		conn.close();
+		return songlist;
+	}
+	
+	
+	
+	 public static void getDetails(String id,String artist_id,String movie,String song,String composer,String lyrics,String artist_name) throws Exception {
+		Connection conn = getConnection();		
+		String sql1 = "update music_catalog a set a.movie='"+movie+"',a.song='"+song+"',a.composer='"+composer+"',a.lyrics='"+lyrics+"' where a.id='"+id+"'";
+		//String sql="update music_artist set artist_name='"+artist_name+"' where music_catalog.catalog_id=music_catalog_m2m_artist.catalog_id and music_artist.artist_id=music_catalog_m2m_artist.artist_id;"
+		PreparedStatement ps = conn.prepareStatement(sql1);
+		ps.execute();
+		ps.close();
+		}
+	
 
 	private static Connection getConnection() throws Exception {
 
