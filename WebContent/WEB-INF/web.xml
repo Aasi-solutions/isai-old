@@ -43,6 +43,14 @@
     <servlet-class>com.imayam.music.FileUploadServlet</servlet-class>
   </servlet>
   <servlet>
+    <servlet-name>Auto1</servlet-name>
+    <servlet-class>com.imayam.music.Auto1</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>Auto2</servlet-name>
+    <servlet-class>com.imayam.music.Auto2</servlet-class>
+  </servlet>
+  <servlet>
     <servlet-name>Auto</servlet-name>
     <servlet-class>com.imayam.music.Auto</servlet-class>
   </servlet>
@@ -53,6 +61,14 @@
    <servlet-mapping>
     <servlet-name>Auto</servlet-name>
     <url-pattern>/auto</url-pattern>
+  </servlet-mapping>
+   <servlet-mapping>
+    <servlet-name>Auto1</servlet-name>
+    <url-pattern>/auto1</url-pattern>
+  </servlet-mapping>
+   <servlet-mapping>
+    <servlet-name>Auto2</servlet-name>
+    <url-pattern>/auto2</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
     <servlet-name>CallBackServlet</servlet-name>

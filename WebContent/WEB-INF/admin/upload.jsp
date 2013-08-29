@@ -7,15 +7,22 @@
 <title>File Upload</title>
 </head>
 
+		<center>			 File Upload</center>
+					</br></br>    
       <form method="post" name="f2" action="adminaction?action=uploadaction" enctype="multipart/form-data">
-      <input type="textbox"  name="fname" id="fid" >
-        Select File to upload:
+     Enter Movie Name     : <input type="textbox"  name="fname" id="fid" ></br>
+     			Select File to upload:
  <input type="file" name="uploadFile" /> 
             <br/><br/> 
  
-            <input type="submit" value="Upload" />        
-        </form>    
-    </center>
+            <input type="submit" value="Upload" /></br></br>      
+         
+
+
+Or GoTo Edit:
+</br>
+</br>
+<a href="/isai/adminaction?action=adminedit">Edit</a> </form>  
 
 <body>
 

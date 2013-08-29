@@ -29,8 +29,6 @@ public class ImayamListener implements ServletContextListener {
 
 		  MyTimerTask myTask = new MyTimerTask();
 		  Timer myTimer = new Timer();
-
-		  
 		  myTimer.schedule(myTask, runDate.getTime());
 		//  System.out.println("Date"+runDate.getTime());
 

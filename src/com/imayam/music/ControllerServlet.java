@@ -35,14 +35,16 @@ public class ControllerServlet extends HttpServlet {
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		doPost(request, response);
-		
-	}
+}
 
 	public void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		try {
+			
+					
+			
 			HttpSession session = request.getSession();
-			session.setAttribute("artists1", null);
+		    session.setAttribute("artists1", null);
 			String action = request.getParameter("action");
 			logger.debug("action : " + action);
 		if ("reindex".equalsIgnoreCase(action)) {
@@ -68,7 +70,7 @@ public class ControllerServlet extends HttpServlet {
 				// request.getRequestDispatcher("/songs/radio/index.jsp").forward(request,
 				// response);
 				response.sendRedirect("/isai/songs/radio/index.jsp");
-
+				
 			} else if ("numbmoviesearch".equalsIgnoreCase(action)) {
 
 			//	String s = request.getParameter("id");
@@ -78,7 +80,6 @@ public class ControllerServlet extends HttpServlet {
 				// request.getRequestDispatcher("/songs/radio/index.jsp").forward(request,
 				// response);
 				response.sendRedirect("/isai/songs/radio/index.jsp");
-
 			}else if ("artist".equalsIgnoreCase(action)) {
 				session.setAttribute("artists1", null);
 				ArrayList songsList = DataAccess.getArtistsList();
@@ -124,8 +125,10 @@ public class ControllerServlet extends HttpServlet {
 				session.setAttribute("artists1", null);
 				getcustomRssPlayList(action, response);
 			} else {
-				request.getRequestDispatcher("/isai/songs/radio/index.jsp")
-						.forward(request, response);
+				ArrayList<GetMovie> gm = new ArrayList<GetMovie>();
+				gm = DataAccess.getImage();
+				request.setAttribute("img1", gm);
+				request.getRequestDispatcher("songs/radio/index.jsp").forward(request, response); 
 			}
 		}
 
@@ -260,11 +263,7 @@ public class ControllerServlet extends HttpServlet {
 		String title = tag.getFirst(FieldKey.TITLE);
 		String lyricist=tag.getFirst(FieldKey.LYRICIST);
 		String composer = tag.getFirst(FieldKey.COMPOSER);
-//		String tempArtist =audioFile.getTag().getFirstArtist();
-//		String album = audioFile.getTag().getFirstAlbum();
-//		String title = audioFile.getTag().getFirstTitle();
-	//	String lyrics = audioFile.getTag().getFirst(TagFieldKey.LYRICS);
-	  //String composer = audioFile.getTag().getFirst(TagFieldKey.COMPOSER);
+
 
 		buffer.append("This is : " + filename.getAbsoluteFile());
 		buffer.append("This is : " + imagename.getAbsoluteFile());

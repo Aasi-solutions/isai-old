@@ -29,13 +29,13 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Servlet implementation class Auto
  */
-public class Auto extends HttpServlet {
+public class Auto1 extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public Auto() {
+    public Auto1() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -74,18 +74,8 @@ public class Auto extends HttpServlet {
 	       {
 	           li.add(rs.getString(1));
 	       }
-	     //  System.out.println(li);
-	    //    Gson gson = new Gson();
-	      // convert java object to JSON format,
-	        // and returned as JSON formatted string
-//	        String json = gson.toJson(li);
-//	        System.out.println(json);
-//	        out.write(json);
+	     
 	       String[] str = new String[li.size()];
-	  //      request.setAttribute("json",json);
-	     //   request.getRequestDispatcher("/isai/index.jsp");
-	   //     RequestDispatcher dispatcher = request.getRequestDispatcher("/isai/index.jsp");
-	     //   dispatcher.forward(request, response);
 	       
 	       Iterator it = li.iterator();
 	 

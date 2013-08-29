@@ -1,5 +1,7 @@
 package com.imayam.music;
 import java.util.*;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
 import java.io.OutputStream;
 import java.sql.Array;
 import java.sql.Connection;
@@ -13,6 +15,7 @@ import java.util.Iterator;
 import java.util.TimerTask;
 import java.util.Timer;
 
+import javax.imageio.ImageIO;
 import javax.servlet.RequestDispatcher;
 import javax.smartcardio.ATR;
 import javax.swing.JOptionPane;
@@ -576,15 +579,120 @@ public final class DataAccess  {
 		conn.close();
 	}
 	
+	public static ArrayList<GetMovie> getImage() throws Exception {
+		Connection conn = getConnection();	
+		ArrayList<GetMovie>getimage = new ArrayList<GetMovie>();
+		String sql = "select movie as m,image_file_name as i,sum(month_hitcount) as a,count(song) as b ,sum(month_hitcount)/count(song) as c from music_catalog group by movie order by c desc limit 0, 3";
+		Statement stmt = conn.createStatement();
+		ResultSet rs = stmt.executeQuery(sql);
+		while (rs.next()) {
+			String image = rs.getString("i");
+			String str1=image.replace("/home/imayam2/public_html/", "http://www.imayam.org/");
+			String movie = rs.getString("m");
+			GetMovie gv= new GetMovie();
+			gv.setMoviename(movie);
+			gv.setImage(str1);
+			getimage.add(gv);
+			}
+		conn.close();
+		return getimage;
+	}
 	
-
-
+	public static void getArtistname(String id,String movie,String artist_id,String artist_name) throws Exception {
+		Connection conn = getConnection();
+		
+		String sql="select artist_id from music_artist where artist_name='"+artist_name+"'";
+		Statement stmt = conn.createStatement();
+		ResultSet rs = stmt.executeQuery(sql);
+		if(rs.next()) {	
+			String aid=rs.getString("artist_id");
+			String sql1="select artist_id,catalog_id from music_catalog_m2m_artist where catalog_id='"+id+"'";
+			Statement stmt1 = conn.createStatement();
+			ResultSet rs1 = stmt1.executeQuery(sql1);
+			if (rs1.next()) {
+				String arid=rs1.getString("artist_id");
+				if(!arid.equals(aid))
+				{
+					String sql3="insert into music_catalog_m2m_artist values ('"+id+"','"+aid+"')";
+					Statement stmt3 = conn.createStatement();
+					stmt3.execute(sql3);
+					
+				}
+				
+			}	
+			else{
+			String sql3="insert into music_catalog_m2m_artist values ('"+id+"','"+aid+"')";
+			Statement stmt3 = conn.createStatement();
+			stmt3.execute(sql3);
+			System.out.println("Inserted");
+			}
+		}else{
+			String sql1 = "insert into music_artist values(null,'"
+					+ artist_name + "',0)";
+			Statement stmt1 = conn.createStatement();
+			stmt1.execute(sql1);
+			DataAccess.getArtistname(id, movie, artist_id, artist_name);
+		}
+		conn.close();
+		}
+	
+	public static void deleteArtist(String arid, String cid) throws Exception {
+		Connection conn = getConnection();
+		String sql="delete from music_catalog_m2m_artist where artist_id='"+arid+"' and catalog_id='"+cid+"'" ;
+		PreparedStatement ps = conn.prepareStatement(sql);
+		ps.execute();
+		System.out.println("Deleted"+arid+cid);
+		ps.close();		
+		
+		}
+	
+	 public static void getDetails(String id,String artist_id,String movie,String song,String composer,String lyrics,String artist_name) throws Exception {
+		Connection conn = getConnection();		
+		String sql1 = "update music_catalog a set a.movie='"+movie+"',a.song='"+song+"',a.composer='"+composer+"',a.lyrics='"+lyrics+"' where a.id='"+id+"'";
+		//String sql="update music_artist set artist_name='"+artist_name+"' where music_catalog.catalog_id=music_catalog_m2m_artist.catalog_id and music_artist.artist_id=music_catalog_m2m_artist.artist_id;"
+		PreparedStatement ps = conn.prepareStatement(sql1);
+		ps.execute();
+		ps.close();
+		}
+	 
+	 public static ArrayList<SongVo> getsongfields(String getmovie) throws Exception {
+			Connection conn = getConnection();
+			ArrayList<SongVo> songlist = new ArrayList<SongVo>();
+			//select * from music_catalog a left join music_catalog_m2m_artist b on(a.id = b.catalog_id) where a.movie='3'; and b.artist_id=c.artist_id
+			//select distinct a.id,a.movie,a.song,a.composer,a.lyrics,c.artist_id,c.artist_name from music_catalog a left join music_catalog_m2m_artist b on (a.id=b.catalog_id)  left join  music_artist c on( c.artist_id=b.artist_id) where  a.movie='3';
+			String sql = "select distinct a.id,a.movie,a.song,a.composer,a.lyrics,c.artist_id,c.artist_name from music_catalog a left join music_catalog_m2m_artist b on (a.id=b.catalog_id) left join music_artist c on( c.artist_id=b.artist_id) where a.movie='"+getmovie+"'";
+			Statement stmt = conn.createStatement();
+			ResultSet rs = stmt.executeQuery(sql);
+			while (rs.next()) {	
+				String id = rs.getString("id");
+				String movie=rs.getString("movie");
+				String song = rs.getString("song");
+				String composer = rs.getString("composer");
+				String lyrics = rs.getString("lyrics");
+				String artist = rs.getString("artist_name");
+				String artist_id=rs.getString("artist_id");
+			
+				SongVo av=new SongVo();
+				av.setId(id);
+				av.setMovieName(movie);
+				av.setsongName(song);
+				av.setComposerName(composer);
+				av.setLyricistName(lyrics);
+				av.setArtistName(artist);
+				av.setArtistId(artist_id);
+				songlist.add(av);
+				
+		}								
+			conn.close();
+			return songlist;
+		}
+	
 	private static Connection getConnection() throws Exception {
 
 		// Register the JDBC driver for MySQL.
 		Class.forName("com.mysql.jdbc.Driver");
-	//Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/imayam2_phpbb1", "root","aasi");
-		Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/imayam2_phpbb1", "imayam2_aasi","aasi");
+//	Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/imayam2_phpbb1", "root","aasi");// local connection
+		Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/imayam2_phpbb1", "imayam2_aasi","aasi");//Server connection
 	// Connection con =DriverManager.getConnection("jdbc:mysql://localhost:3306/imayam77_phpbb1","imayam77_phpbb1", "");
 
 		return con;

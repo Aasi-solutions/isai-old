@@ -10,6 +10,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Iterator;
 
 import javax.mail.Session;
@@ -80,7 +81,74 @@ public class FileUploadServlet extends HttpServlet {
 		PrintWriter out = response.getWriter();
 		response.setContentType("text/html");
 		String action = request.getParameter("action");
-		if ("home".equalsIgnoreCase(action)) {
+		if ("adminedit".equalsIgnoreCase(action)) {
+			ArrayList<SongVo> sv = new ArrayList<SongVo>();
+
+			try {
+				String getmovie = request.getParameter("searchartist");
+				sv = DataAccess.getsongfields(getmovie);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			// return;
+
+			request.setAttribute("song", sv);
+			request.getRequestDispatcher("/WEB-INF/admin/edit.jsp").forward(
+					request, response);
+			return;
+		} else if ("addartist".equalsIgnoreCase(action)) {
+			System.out.println("Entered into addartist action");
+			String artistname = request.getParameter("txt");
+			String id = request.getParameter("id");
+			String movie = request.getParameter("movie");
+			String artist_id = request.getParameter("aid");
+			try {
+				
+				DataAccess.getArtistname(id, movie, artist_id, artistname);
+				out.println("Inserted Artistname "+artistname+" catalog_id"+ id);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+		}
+		else if ("Delete".equalsIgnoreCase(action)) {
+			
+			try {
+				String arid=request.getParameter("aid");
+			String cid = request.getParameter("id");
+			
+				DataAccess.deleteArtist(arid,cid);
+				out.println("Deleted !!!"+ " Artist Id "+arid+"Catalog_id "+cid);
+			}
+			 catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+		}
+		
+		
+		else if ("update".equalsIgnoreCase(action)) {
+			String id = request.getParameter("id");
+			String artist_id = request.getParameter("aid");
+			String movie = request.getParameter("movie");
+			String song = request.getParameter("song");
+			String composer = request.getParameter("composer");
+			String lyrics = request.getParameter("lyrics");
+			String artist_name = request.getParameter("artist");
+
+			try {
+				DataAccess.getDetails(id, artist_id, movie, song, composer,
+						lyrics, artist_name);
+				out.println("Changes Updated!!!");
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		else if ("home".equalsIgnoreCase(action)) {
 			RequestDispatcher rd = request
 					.getRequestDispatcher("/WEB-INF/admin/admin.jsp");
 			rd.forward(request, response);
@@ -92,9 +160,9 @@ public class FileUploadServlet extends HttpServlet {
 				try {
 
 					Class.forName("com.mysql.jdbc.Driver");
-//					Connection con = DriverManager.getConnection(
+//				Connection con = DriverManager.getConnection(
 //						"jdbc:mysql://localhost:3306/imayam2_phpbb1",
-//							"root", "aasi");
+//						"root", "aasi");
 					 Connection con =
 					 DriverManager.getConnection("jdbc:mysql://localhost:3306/imayam2_phpbb1",
 					 "imayam2_aasi","aasi");
@@ -149,19 +217,23 @@ public class FileUploadServlet extends HttpServlet {
 		}
 
 		else if ("uploadaction".equalsIgnoreCase(action)) {
+			logger.debug("Line No:152");
+			try {
 			if (!ServletFileUpload.isMultipartContent(request)) {
+				logger.debug("Line No:154");
 				// if not, we stop here
 				PrintWriter writer = response.getWriter();
 				writer.println("Error: Form must has enctype=multipart/form-data.");
 				writer.flush();
 				return;
 			}
-
+			logger.debug("Line no:162");
 			// configures upload settings
 			DiskFileItemFactory factory = new DiskFileItemFactory();
 			// sets memory threshold - beyond which files are stored in disk
 			factory.setSizeThreshold(MEMORY_THRESHOLD);
 			// sets temporary location to store files
+			logger.debug("Temp Dir"+System.getProperty("java.io.tmpdir"));
 			factory.setRepository(new File(System.getProperty("java.io.tmpdir")));
 			ServletFileUpload upload = new ServletFileUpload(factory);
 
@@ -172,42 +244,46 @@ public class FileUploadServlet extends HttpServlet {
 			upload.setSizeMax(MAX_REQUEST_SIZE);
 
 			// constructs the directory path to store upload file
-		//	String uploadPath = "C:/AASI_WORK/2013" + File.separator;
+	//		String uploadPath = "C:/AASI_WORK/2013" + File.separator;
 
-			 String uploadPath =
-			 "/home/imayam2/public_html/songs/2013"+File.separator;
+			 String uploadPath ="/home/imayam2/public_html/songs/2013";
 
-			try {
+			
 				// parses the request's content to extract file data
-				@SuppressWarnings("unchecked")
+			//	@SuppressWarnings("unchecked")
 				List<FileItem> formItems = upload.parseRequest(request);
-
+				logger.debug(formItems.size());
 				if (formItems != null && formItems.size() > 0) {
+					logger.debug("Line No:187");
 					File uploadDir = null;
 
 					// iterates over form's fields
-					System.out.println();
 					for (FileItem item : formItems) {
+						logger.debug("Line No:192");
 						String name = item.getFieldName();
 						String value = item.getString().toString();
 
 						// processes only fields that are not form fields
 						if (!item.isFormField()) {
-							System.out.println(item.getSize());
+							logger.debug("Line No:198");
+						//	System.out.println(item.getSize());
 							String fileName = new File(item.getName())
 									.getName();
 
 							if (fileName.equals("")) {
+								logger.debug("Line No:204");
 								String message = "Please Choose a File";
 								request.setAttribute("message", message);
 								request.getRequestDispatcher(errorPage)
 										.forward(request, response);
 							} else if (!fileName.equals("")
 									&& !value.equals("")) {
+								logger.debug("Line No:211");
 								if (!uploadDir.exists()) {
+									logger.debug("Line No:213");
 									uploadDir.mkdir();
 									String filePath = uploadDir
-											+ File.separator + fileName;
+											+ "/" + fileName;
 									File storeFile = new File(filePath);
 									logger.debug("File name " + fileName
 											+ "Fie Path" + filePath
@@ -219,8 +295,9 @@ public class FileUploadServlet extends HttpServlet {
 											"Upload has been done successfully!");
 									break;
 								} else if(uploadDir.exists()){
+									logger.debug("Line No:228");
 									String filePath = uploadDir
-											+ File.separator + fileName;
+											+ "/" + fileName;
 									File storeFile = new File(filePath);
 									logger.debug("File name " + fileName
 											+ "Fie Path" + filePath
@@ -235,27 +312,32 @@ public class FileUploadServlet extends HttpServlet {
 								}
 								else
 								{
+									logger.debug("Line No:245");
 									String message = "Please Choose a File";
 									request.setAttribute("message", message);
 									request.getRequestDispatcher(errorPage)
 											.forward(request, response);
 								}
 							} else if (value.equals("") && fileName.equals("")) {
+								logger.debug("Line No:252");
 								String message = "Please Enter Folder name and Choose a File";
 								request.setAttribute("message", message);
 								request.getRequestDispatcher(errorPage)
 										.forward(request, response);
 							} else if (!value.equals("") && fileName.equals("")) {
+								logger.debug("Line No:258");
 								String message = "Please Choose a File";
 								request.setAttribute("message", message);
 								request.getRequestDispatcher(errorPage)
 										.forward(request, response);
 							} else if (value.equals("") && !fileName.equals("")) {
+								logger.debug("Line No:264");
 								String message = "Please Enter the Folder Name";
 								request.setAttribute("message", message);
 								request.getRequestDispatcher(errorPage)
 										.forward(request, response);
 							} else {
+								logger.debug("Line No:270");
 								String message = "Please Enter Folder name and Choose a File";
 								request.setAttribute("message", message);
 								request.getRequestDispatcher(errorPage)
@@ -267,10 +349,12 @@ public class FileUploadServlet extends HttpServlet {
 						
 						if(!value.equals(""))
 						{
+							logger.debug("Line No:282");
 							logger.debug("name and value" + name + value);
 							uploadDir = new File(uploadPath + value);
 							logger.debug("uploadDir" + uploadDir);
 						}else{
+							logger.debug("Line No:287");
 							String message = "Please Enter Folder name";
 							request.setAttribute("message", message);
 							request.getRequestDispatcher(errorPage)
@@ -281,15 +365,21 @@ public class FileUploadServlet extends HttpServlet {
 
 					}
 				}
-			}
-
-			catch (Exception ex) {
+			}catch (Exception ex)  {
+				logger.debug("Line no:301");
 				logger.error("Exception : " + ex.getMessage(), ex);
+				request.setAttribute("message", ex.getMessage());
 				request.getRequestDispatcher(errorPage).forward(request,
 						response);
 
+			}catch (Throwable ex)  {
+				logger.debug("Line no:308");
+				logger.error("Throwable : " + ex.getMessage(), ex);
+				request.setAttribute("message", ex.getMessage());
+				request.getRequestDispatcher(errorPage).forward(request,
+						response);
 			}
-
+			logger.debug("Line no:314");
 			// redirects client to message page
 			getServletContext().getRequestDispatcher("/message.jsp").forward(
 					request, response);

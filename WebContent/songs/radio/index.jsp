@@ -36,9 +36,10 @@ String numbmoviesearch = (String) request.getParameter("numbmoviesearch");
         <META HTTP-EQUIV="ACCEPT-ENCODING" CONTENT="gzip, delate" />
 	<META NAME="keywords" content="tamil songs online, listen to tamil songs, songs, tamil, movie, songs no firewall issues, aalwar, pokkiri, aalvar, aazhwar, aazhvar, top 10, top 10 songs, imayam top 10, songs, kuselan">
 	<META NAME="keywords" content="Yuvan, Yuvan Shankar Raja, Poovellam Kettupaar, g v prakasah">
-	<META NAME="description" content="Listen to Tamil Songs Online">
-	<link rel=stylesheet type="text/css" href="../../style.css">
-	<link rel=stylesheet type="text/css" href="../../style2.css">
+	<META NAME="description" content="<%= artist %>">
+	<link rel=stylesheet type="text/css" href="/isai/style.css">
+	<link rel=stylesheet type="text/css" href="/isai/style2.css">
+
   <%@ include file="/ajax.jsp" %>  
   
 <script type="text/javascript" 
@@ -243,40 +244,34 @@ width="150" height="175" border="0"></a>
 	session.setAttribute("artists1", null);
     display = artist;
     playString = "/isai/music?action=playRssSong" + artist;
-} 
+    } 
 else if ("playlist1".equalsIgnoreCase(userAction)) { 
 	session.setAttribute("artists1", null);
     display = moviesearch;
     playString = "/isai/music?action=getSongs" + moviesearch;
+    
 }else if ("playlist1".equalsIgnoreCase(userAction)) {
 	session.setAttribute("artists1", null);
 	display = numbmoviesearch;
     playString = "/isai/music?action=getSongs" + numbmoviesearch;
-
-}else if ("search".equalsIgnoreCase(userAction)) { 
+    
+    }else if ("search".equalsIgnoreCase(userAction)) { 
 	session.setAttribute("artists1", null);
     display = searchartist;
     playString = "/isai/music?action=search" + searchartist;
-} else if ("userplaylist".equalsIgnoreCase(userAction)) { 
-    display = artist;
+} else if ("userplaylist".equalsIgnoreCase(userAction)) {
+	display = artist;
     playString = "/isai/music?action=customRssPlayList" + artist;
 
-} else { 
-    display = "All Time Hits";
+} else  {
+	display = "All Time Hits";
     playString = "file=alltime.xml&" + playString;
- } %>
+    
+ }
+ %>
 
 </FORM><b>
 <a href="/isai/music?action=numbmoviesearch">0-9</a>&nbsp&nbsp&nbsp
-<!-- <a href="/isai/music?action=moviesearch&id=1">1</a> -->
-<!-- <a href="/isai/music?action=moviesearch&id=2">2</a> -->
-<!-- <a href="/isai/music?action=moviesearch&id=3">3</a> -->
-<!-- <a href="/isai/music?action=moviesearch&id=4">4</a> -->
-<!-- <a href="/isai/music?action=moviesearch&id=5">5</a> -->
-<!-- <a href="/isai/music?action=moviesearch&id=6">6</a> -->
-<!-- <a href="/isai/music?action=moviesearch&id=7">7</a> -->
-<!-- <a href="/isai/music?action=moviesearch&id=8">8</a> -->
-<!-- <a href="/isai/music?action=moviesearch&id=9">9</a>&nbsp&nbsp&nbsp -->
 <a href="/isai/music?action=moviesearch&id=a">A</a>
 <a href="/isai/music?action=moviesearch&id=b">B</a>
 <a href="/isai/music?action=moviesearch&id=c">C</a>
@@ -308,7 +303,7 @@ else if ("playlist1".equalsIgnoreCase(userAction)) {
 <br><br>
 <br><br>
 
-<form name="searchForm" action="index.jsp" method="get">
+<form name="searchForm" action="/isai/songs/radio/index.jsp" method="get">
   <input type="text" id="auto" name="searchartist" class="input_text" />
       <input type="hidden" name="action" value="search" />
     <input type="submit" name="action" value="Search & Listen" />
@@ -328,10 +323,83 @@ else if ("playlist1".equalsIgnoreCase(userAction)) {
 <c:forEach var="item" items="${sessionScope.artists1}">
 <a href="/isai/songs/radio/index.jsp?action=playlist1&moviesearch=<c:out value="${item}" />"><c:out value="${item}" /></a><br>
 </c:forEach>
+<%if(userAction == null  ){ %>
+<script language="JavaScript1.2">
+var variableslide=new Array();
+
+//variableslide[x]=["path to image", "OPTIONAL link for image", "OPTIONAL text description (supports HTML tags)"]
+<c:set var="count" value="0" scope="page"/> 
+
+<c:forEach items="${img1}" varStatus="status" var="slide"  begin="0" end="2"> 
+
+ variableslide["<c:out value="${count}" />"]=["<c:out value="${slide.image}" />","http://imayam.org/isai/songs/radio/index.jsp?action=playlist&artist="+"<c:out value="${slide.moviename}"/>", "<c:out value="${slide.moviename}"/>"] 
+ <c:set var="count" value="${count + 1}" scope="page"/> 
+
+</c:forEach> 
+
+//configure the below 3 variables to set the dimension/background color of the slideshow
+
+var slidewidth='300px' //set to width of LARGEST image in your slideshow
+var slideheight='130px' //set to height of LARGEST iamge in your slideshow, plus any text description
 
 
-<br><br><br><br><br>
+//configure the below variable to determine the delay between image rotations (in miliseconds)
+var slidedelay=3000
 
+////Do not edit pass this line////////////////
+
+var ie=document.all
+var dom=document.getElementById
+
+for (i=0;i<variableslide.length;i++){
+var cacheimage=new Image()
+cacheimage.src=variableslide[i][0]
+}
+
+var currentslide=0
+
+function rotateimages(){
+contentcontainer='<center>'
+if (variableslide[currentslide][1]!="")
+contentcontainer+='<a href="'+variableslide[currentslide][1]+'">'
+contentcontainer+='<img src="'+variableslide[currentslide][0]+'" border="0" vspace="3" width="300" height="130">'
+if (variableslide[currentslide][1]!="")
+contentcontainer+='</a>'
+contentcontainer+='</center>'
+if (variableslide[currentslide][2]!="")
+contentcontainer+=variableslide[currentslide][2]
+
+if (document.layers){
+crossrotateobj.document.write(contentcontainer)
+crossrotateobj.document.close()
+}
+else if (ie||dom)
+crossrotateobj.innerHTML=contentcontainer
+if (currentslide==variableslide.length-1) currentslide=0
+else currentslide++
+setTimeout("rotateimages()",slidedelay)
+}
+
+if (ie||dom)
+document.write('<div id="slidedom" style="width:'+slidewidth+';height:'+slideheight+'; background-color:'+slidebgcolor+'"></div>')
+
+function start_slider(){
+crossrotateobj=dom? document.getElementById("slidedom") : ie? document.all.slidedom : document.slidensmain.document.slidenssub
+if (document.layers)
+document.slidensmain.visibility="show"
+rotateimages()
+}
+
+if (ie||dom)
+start_slider()
+else if (document.layers)
+window.onload=start_slider
+
+</script>
+<%} %>
+<ilayer id="slidensmain" width=&{slidewidth}; height=&{slideheight}; bgColor=&{slidebgcolor}; visibility=hide><layer id="slidenssub" width=&{slidewidth}; left=0 top=0></layer></ilayer>
+</br>
+</br>
 
 
 <% if (userAction != null) { %>
@@ -348,24 +416,6 @@ else if ("playlist1".equalsIgnoreCase(userAction)) {
 
 
 <br><br><br>
-<!-- 
-<script type='text/javascript' src='/isai/songs/radio/jwplayer/jwplayer.js'></script>
-
-<div id='mediaplayer'></div>
-
-<script type="text/javascript">
-  jwplayer('mediaplayer').setup({
-    'flashplayer': '/jwplayer/jwplayer.flash.swf',
-    'id': 'playerID',
-    'width': '480',
-    'height': '480',
-    'file': '<%= playString %>',
-     'plugins': 'flow',
-    'flow.position': 'bottom',
-    'flow.size': '200'
-  });
-</script>
- -->
  
 <script src="/isai/songs/radio/jwplayer/jwplayer.js"></script>
 <script>jwplayer.key="vgS1BfSqLpSK6cgafU71a1u27g0QipZEbQ1dfQ=="</script>
@@ -387,7 +437,7 @@ jwplayer("myElement").setup({
 </script>
 
 
-<
+
 
 <br><br><br><br>
 
