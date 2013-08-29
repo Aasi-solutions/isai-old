@@ -40,7 +40,7 @@ Enter Movie Name:
 	
 <script>
 	jQuery($(function() {
-		$("#auto2").autocomplete("/isai/auto2");
+		$(".auto2").autocomplete("/isai/auto2");
 	}));
 	</script>
 
@@ -76,7 +76,7 @@ Enter Movie Name:
 				 <td><input type="text" name="artist"  
 					value="<c:out value="${item.artistName}"></c:out>" /></td>
 					<td><input type="submit" name="action" value="update"/></td> 		
-				<td><input type="textbox" id="auto2" name="txt"  ></td>
+				<td><input type="textbox" class="auto2" name="txt"  ></td>
  		<td><input type="submit" name="action" value="addartist"></td>
  		<td><input type="submit" name="action" value="Delete"></td>
 					</tr>
