@@ -341,7 +341,7 @@ var variableslide=new Array();
 
 var slidewidth='300px' //set to width of LARGEST image in your slideshow
 var slideheight='130px' //set to height of LARGEST iamge in your slideshow, plus any text description
-
+var slidebgcolor=' #FFFFFF'
 
 //configure the below variable to determine the delay between image rotations (in miliseconds)
 var slidedelay=3000
