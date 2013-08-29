@@ -22,8 +22,8 @@
 
 
 <div id="center">
-Enter Movie Name:
-	<form name="searchForm" action="adminaction" method="get">
+<h2><font color="#972800">Enter Movie Name:</font></h2>
+	<form name="searchForm" action="adminaction" method="get" style="font-face: 'Comic Sans MS'; font-size: larger;">
 		<input type="hidden" name="action" value="adminedit" />
 		 <input type="textbox" id="auto1" name="searchartist" class="ui-widget" /> 
 			<input type="submit" name="searchbtn" value="Search by Movie" />
@@ -46,11 +46,11 @@ Enter Movie Name:
 
 <table>
 	<tr>
-		<th>Catalog_Id:</th>
-		<th>Artist_Id:</th>
-		<th>Movie_Name:</th>
-		<th>Song_Name:</th>
-		<th>Composer_Name:</th>
+		<h2><th>Catalog_Id:</font></th></h2>
+		<h2><th>Artist_Id:</th></h2>
+		<h2><th>Movie_Name:</th></h2>
+		<h2><th>Song_Name:</th></h2>
+		<h2><th>Composer_Name:</th></h2>
 		
 		<th>Lyricist_Name:</th>
 		<th>Artist_Name:</th>
@@ -61,12 +61,12 @@ Enter Movie Name:
 		
 
 			<tr>
-				<td><c:out value="${item.id}"></c:out></td>
+				<td><font color="blue"><c:out value="${item.id}"></c:out></font></td>
 				<input type="hidden" name="id" value="<c:out value="${item.id}"></c:out>" />
-				<td><c:out value="${item.artistId}"></c:out></td>
+				<td><font color="red"><c:out value="${item.artistId}"></c:out></font></td>
 				<input type="hidden" name="aid" value="<c:out value="${item.artistId}"></c:out>" />
 				<td><input type="text" name="movie"
-							value="<c:out value="${item.movieName}"></c:out>" /></td>
+						value="<c:out value="${item.movieName}" ></c:out>" /></td>
 				<td><input type="text" name="song"
 					value="<c:out value="${item.songName}"></c:out>" /></td>
 				<td><input type="text" name="composer"
@@ -75,7 +75,7 @@ Enter Movie Name:
 					value="<c:out value="${item.lyricistName}"></c:out>" /></td>			
 				 <td><input type="text" name="artist"  
 					value="<c:out value="${item.artistName}"></c:out>" /></td>
-					<td><input type="submit" name="action" value="update"/></td> 		
+					<td><input type="submit" name="action" value="update" /></td> 		
 				<td><input type="textbox" class="auto2" name="txt"  ></td>
  		<td><input type="submit" name="action" value="addartist"></td>
  		<td><input type="submit" name="action" value="Delete"></td>

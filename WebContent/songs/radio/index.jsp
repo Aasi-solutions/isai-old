@@ -398,8 +398,6 @@ window.onload=start_slider
 </script>
 <%} %>
 <ilayer id="slidensmain" width=&{slidewidth}; height=&{slideheight}; bgColor=&{slidebgcolor}; visibility=hide><layer id="slidenssub" width=&{slidewidth}; left=0 top=0></layer></ilayer>
-</br>
-</br>
 
 
 <% if (userAction != null) { %>

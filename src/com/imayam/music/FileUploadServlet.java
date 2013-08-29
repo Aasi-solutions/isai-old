@@ -103,13 +103,21 @@ public class FileUploadServlet extends HttpServlet {
 			String id = request.getParameter("id");
 			String movie = request.getParameter("movie");
 			String artist_id = request.getParameter("aid");
+			if(!artistname.equals(""))
+			{
 			try {
 				
 				DataAccess.getArtistname(id, movie, artist_id, artistname);
 				out.println("Inserted Artistname "+artistname+" catalog_id"+ id);
+				out.println("<a href=\"adminaction?action=adminedit\">Back</a>");
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+			}
+			}else
+			{
+				out.println("Please Enter Artist Name");
+				out.println("<a href=\"adminaction?action=adminedit\">Back</a>");
 			}
 
 		}
@@ -121,6 +129,7 @@ public class FileUploadServlet extends HttpServlet {
 			
 				DataAccess.deleteArtist(arid,cid);
 				out.println("Deleted !!!"+ " Artist Id "+arid+"Catalog_id "+cid);
+				out.println("<a href=\"adminaction?action=adminedit\">Back</a>");
 			}
 			 catch (Exception e) {
 				// TODO Auto-generated catch block
@@ -143,6 +152,7 @@ public class FileUploadServlet extends HttpServlet {
 				DataAccess.getDetails(id, artist_id, movie, song, composer,
 						lyrics, artist_name);
 				out.println("Changes Updated!!!");
+				out.println("<a href=\"adminaction?action=adminedit\">Back</a>");
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

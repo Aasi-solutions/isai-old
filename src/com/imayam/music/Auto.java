@@ -63,7 +63,7 @@ public class Auto extends HttpServlet {
 //					"jdbc:mysql://localhost:3306/imayam2_phpbb1",
 //					"root", "aasi");
 			 Connection con =
-			DriverManager.getConnection("jdbc:mysql://localhost:3306/imayam2_phpbb1",
+      		DriverManager.getConnection("jdbc:mysql://localhost:3306/imayam2_phpbb1",
 			"imayam2_aasi","aasi");
 	     Statement st=con.createStatement();
 	     ResultSet rs = st.executeQuery("select distinct movie from music_catalog where movie like '"+query+"%'");
